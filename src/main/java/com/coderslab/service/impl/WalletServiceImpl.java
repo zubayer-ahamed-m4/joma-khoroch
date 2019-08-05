@@ -11,6 +11,9 @@ import com.coderslab.entity.Wallet;
 import com.coderslab.repository.WalletRepository;
 import com.coderslab.service.WalletService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class WalletServiceImpl implements WalletService {
 
@@ -19,6 +22,7 @@ public class WalletServiceImpl implements WalletService {
 	@Override
 	@Transactional
 	public Wallet save(Wallet obj) {
+		log.info("Saving wallet : {}", obj);
 		return repo.save(obj);
 	}
 

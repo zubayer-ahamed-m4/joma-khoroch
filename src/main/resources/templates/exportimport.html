@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Export import module</title>
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+		<!-- jQuery library -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<!-- Latest compiled JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+				
+					<form class="exportimportform" th:action="@{/exportimport/upload}" method="POST" enctype="multipart/form-data">
+						<div class="form-group">
+							<label for="email">File:</label>
+							<input type="file" class="form-control" id="file" name="file">
+						</div>
+						<button type="submit" class="btn btn-default">Submit</button>
+					</form>
+
+					<br/>
+					<div class="progress">
+						<div id="progressBar" class="progress-bar progress-bar-success" role="progressbar"
+						aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">0%</div>
+					</div>
+					<a th:href="@{/exportimport/size}">get size</a>
+				</div>
+			</div>
+		</div>
+		
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$('form.exportimportform').on('submit', function(e){
+					e.preventDefault();
+					console.log("clicked prevented");
+					
+					var formData = new FormData($(this)[0]);
+					console.log(formData);
+					
+					var formSubmit = $.ajax({
+						url : $(this).attr('action'),
+						type : $(this).attr('method'),
+						data : formData,
+						cache : false,
+						contentType : false,
+						processData : false,
+						beforeSend: function( xhr ) {
+							//Reset alert message and progress bar
+							$('#alertMsg').text('');
+							$('#progressBar').text('');
+							$('#progressBar').css('width','0%');
+						},
+						xhr: function(){
+							//Get XmlHttpRequest object
+							var xhr = $.ajaxSettings.xhr() ;
+							//console.log(xhr);
+							//Set onprogress event handler 
+							xhr.upload.onprogress = function(event){
+								console.log(event);
+								var perc = Math.round((event.loaded / event.total) * 100);
+								$('#progressBar').text(perc + '%');
+								$('#progressBar').css('width',perc + '%');
+							};
+							return xhr ;
+						},
+					});
+
+
+					// Called on success of file upload
+					formSubmit.done(function(data) {
+						console.log(data);
+						$('input[type=file]').val('');
+					});
+
+					// Called on failure of file upload
+					formSubmit.fail(function(jqXHR) {
+						$('#alertMsg').text(jqXHR.responseText+'('+jqXHR.status+' - '+jqXHR.statusText+')');
+					});
+
+				})
+			})
+		</script>
+	</body>
+</html>
