@@ -41,5 +41,5 @@ public class IncomeSource extends AbstractModel {
 	private String icon;
 
 	@Column(name = "userId")
-	private String userId;
+	private Long userId;
 }

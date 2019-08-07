@@ -7,7 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,6 +30,12 @@ public class Users extends AbstractModel {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "UsersSeqGen")
 	@Column(name = "userId", nullable = false, unique = true)
 	private Long userId;
+
+	@Column(name = "firstName")
+	private String firstName;
+
+	@Column(name = "lastName")
+	private String lastName;
 
 	@Column(name = "username")
 	private String username;
