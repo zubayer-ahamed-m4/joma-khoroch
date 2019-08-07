@@ -8,7 +8,10 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  * @author Zubayer Ahamed
@@ -17,7 +20,10 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "expensetype")
-public class ExpenseType {
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
+public class ExpenseType extends AbstractModel {
 
 	@Id
 	@SequenceGenerator(name = "ExpenseTypeSeqGen", schema = "public", sequenceName = "incomesource_incomesourceid_seq", allocationSize = 1)
@@ -30,4 +36,10 @@ public class ExpenseType {
 
 	@Column(name = "note")
 	private String note;
+
+	@Column(name = "icon")
+	private String icon;
+
+	@Column(name = "userId")
+	private String userId;
 }

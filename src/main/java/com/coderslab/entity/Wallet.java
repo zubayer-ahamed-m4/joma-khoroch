@@ -8,7 +8,10 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  * @author Zubayer Ahamed
@@ -17,7 +20,10 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "wallet")
-public class Wallet {
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
+public class Wallet extends AbstractModel {
 
 	@Id
 	@SequenceGenerator(name = "WalletSeqGen", schema = "public", sequenceName = "wallet_walletid_seq", allocationSize = 1)
@@ -28,12 +34,18 @@ public class Wallet {
 	@Column(name = "walletName")
 	private String walletName;
 
-	@Column(name = "primaryBalance")
-	private Double primaryBalance;
+	@Column(name = "initialBalance")
+	private Double initialBalance;
 
 	@Column(name = "currentBalance")
 	private Double currentBalance;
 
-	@Column(name = "note")
-	private String note;
+	@Column(name = "notes")
+	private String notes;
+
+	@Column(name = "icon")
+	private String icon;
+
+	@Column(name = "userId")
+	private String userId;
 }
