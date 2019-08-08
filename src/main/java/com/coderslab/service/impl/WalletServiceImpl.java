@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.coderslab.entity.Wallet;
+import com.coderslab.model.enums.RecordStatus;
 import com.coderslab.repository.WalletRepository;
 import com.coderslab.service.WalletService;
 
@@ -51,6 +52,11 @@ public class WalletServiceImpl implements WalletService {
 	public Boolean deleteById(Long id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Wallet findByWalletName(String walletName) {
+		return repo.findWalletByWalletNameAndStatus(walletName, RecordStatus.L);
 	}
 
 }

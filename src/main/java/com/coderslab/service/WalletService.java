@@ -9,6 +9,13 @@ import com.coderslab.entity.Wallet;
  *
  */
 @Component
-public interface WalletService extends GenericService<Wallet, Long>{
+public interface WalletService extends GenericService<Wallet, Long> {
 
+	/**
+	 * FIND BY WALLET NAME
+	 * 
+	 * @param walletName
+	 * @return {@link Wallet}
+	 */
+	public Wallet findByWalletName(String walletName);
 }
