@@ -21,5 +21,5 @@ public class MonthlyStatus {
 	@ApiModelProperty(notes = "Current available balance", readOnly = true)
 	private Double currentBalance;
 	@ApiModelProperty(notes = "Month and Year", readOnly = true)
-	private Date monthAndYear;
+	private String month;
 }

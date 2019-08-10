@@ -18,4 +18,11 @@ public interface WalletService extends GenericService<Wallet, Long> {
 	 * @return {@link Wallet}
 	 */
 	public Wallet findByWalletName(String walletName);
+
+	/**
+	 * Get total balance
+	 * 
+	 * @return {@link Double}
+	 */
+	public Double getTotalBalance();
 }

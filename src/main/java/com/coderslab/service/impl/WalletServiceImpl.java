@@ -59,4 +59,9 @@ public class WalletServiceImpl implements WalletService {
 		return repo.findWalletByWalletNameAndStatus(walletName, RecordStatus.L);
 	}
 
+	@Override
+	public Double getTotalBalance() {
+		return findAll().stream().mapToDouble(Wallet::getCurrentBalance).sum();
+	}
+
 }

@@ -2,6 +2,7 @@ package com.coderslab.service;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.junit.Test;
@@ -29,6 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 @Rollback(false)
 public class TransactionServiceTest {
 
+	private static final SimpleDateFormat monthFormat = new SimpleDateFormat("MMM");
+
 	@Autowired TransactionService transactionService;
 	@Autowired UsersService usersService;
 	@Autowired WalletService walletService;
@@ -46,6 +49,7 @@ public class TransactionServiceTest {
 		tr.setTransactionDate(new Date());
 		tr.setTransactionTime(new Date());
 		tr.setUserId(usersService.findByUsername("admin").getUserId());
+		tr.setMonth(monthFormat.format(new Date()).toUpperCase());
 		tr = transactionService.save(tr);
 		assertNotNull(tr);
 
@@ -66,6 +70,7 @@ public class TransactionServiceTest {
 		tr.setTransactionDate(new Date());
 		tr.setTransactionTime(new Date());
 		tr.setUserId(usersService.findByUsername("admin").getUserId());
+		tr.setMonth(monthFormat.format(new Date()).toUpperCase());
 		tr = transactionService.save(tr);
 		assertNotNull(tr);
 
@@ -86,6 +91,7 @@ public class TransactionServiceTest {
 		tr.setTransactionDate(new Date());
 		tr.setTransactionTime(new Date());
 		tr.setUserId(usersService.findByUsername("admin").getUserId());
+		tr.setMonth(monthFormat.format(new Date()).toUpperCase());
 		tr = transactionService.save(tr);
 		assertNotNull(tr);
 
@@ -98,5 +104,10 @@ public class TransactionServiceTest {
 		toWallet.setCurrentBalance(toWallet.getCurrentBalance() + tr.getTransactionAmount());
 		toWallet = walletService.update(toWallet);
 		assertNotNull(toWallet);
+	}
+
+	@Test
+	public void testMonthNamePrint() {
+		log.info(monthFormat.format(new Date()).toUpperCase());
 	}
 }

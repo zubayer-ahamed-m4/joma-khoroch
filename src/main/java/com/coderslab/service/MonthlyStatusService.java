@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.coderslab.model.MonthlyStatus;
+import com.coderslab.model.enums.RecordStatus;
 
 /**
  * @author Zubayer Ahamed
@@ -18,9 +19,10 @@ public interface MonthlyStatusService {
 	 * Get List of Monthly status list of current year
 	 * 
 	 * @param userId
-	 * @param year
-	 * @param active
+	 * @param fromDate
+	 * @param toDate
+	 * @param recordStatus
 	 * @return {@link List} of {@link MonthlyStatus}
 	 */
-	public List<MonthlyStatus> getListOfMonthlyStatus(Long userId, Date year, boolean active);
+	public List<MonthlyStatus> getListOfMonthlyStatusofCurrentYear(Long userId, Date fromDate, Date toDate, RecordStatus recordStatus);
 }

@@ -73,6 +73,9 @@ public class Transaction extends AbstractModel {
 	@DateTimeFormat(pattern = "hh:mm:ss")
 	private Date transactionTime;
 
+	@Column(name = "month")
+	private String month;
+
 	@Column(name = "userId")
 	private Long userId;
 }

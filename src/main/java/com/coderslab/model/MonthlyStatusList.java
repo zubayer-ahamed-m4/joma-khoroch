@@ -1,5 +1,6 @@
 package com.coderslab.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
@@ -11,5 +12,5 @@ import lombok.Data;
 @Data
 public class MonthlyStatusList {
 
-	private List<MonthlyStatus> monthlyStatus;
+	private List<MonthlyStatus> monthlyStatus = new ArrayList<>();
 }
