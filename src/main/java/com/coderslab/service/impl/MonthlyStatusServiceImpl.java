@@ -45,14 +45,8 @@ public class MonthlyStatusServiceImpl implements MonthlyStatusService {
 		StringBuilder sql = new StringBuilder()
 			.append("SELECT ")
 			.append("	transactionid, ")
-			.append("	expensetype, ")
-			.append("	fromwallet, ")
-			.append("	incomesource, ")
-			.append("	towallet, ")
 			.append("	transactionamount, ")
-			.append("	transactioncharge, ")
 			.append("	transactiontype, ")
-			.append("	userid, ")
 			.append("	month ")
 			.append("FROM ")
 			.append("	transactions ")
@@ -113,15 +107,9 @@ public class MonthlyStatusServiceImpl implements MonthlyStatusService {
 
 		Transaction tr = new Transaction();
 		tr.setTransactionId(((BigInteger) obj[0]).longValue());
-		tr.setExpenseType(obj[1] != null ? ((BigInteger) obj[1]).longValue() : null);
-		tr.setFromWallet(obj[2] != null ? ((BigInteger) obj[2]).longValue() : null);
-		tr.setIncomeSource(obj[3] != null ? ((BigInteger) obj[3]).longValue() : null);
-		tr.setToWallet(obj[4] != null ? ((BigInteger) obj[4]).longValue() : null);
-		tr.setTransactionAmount(obj[5] != null ? (Double) obj[5] : null);
-		tr.setTransactionCharge(obj[6] != null ? (Double) obj[6] : null);
-		tr.setTransactionType(TransactionType.valueOf((String) obj[7]));
-		tr.setUserId(obj[8] != null ? ((BigInteger) obj[8]).longValue() : null);
-		tr.setMonth((String) obj[9]);
+		tr.setTransactionAmount(obj[1] != null ? (Double) obj[1] : null);
+		tr.setTransactionType(TransactionType.valueOf((String) obj[2]));
+		tr.setMonth((String) obj[3]);
 		return tr; 
 	}
 

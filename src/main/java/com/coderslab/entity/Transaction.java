@@ -48,9 +48,6 @@ public class Transaction extends AbstractModel {
 	@Column(name = "transactionAmount")
 	private Double transactionAmount;
 
-	@Column(name = "transactionCharge")
-	private Double transactionCharge;
-
 	@Column(name = "fromWallet")
 	private Long fromWallet;
 

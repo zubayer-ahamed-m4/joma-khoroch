@@ -43,7 +43,6 @@ public class TransactionServiceTest {
 		Transaction tr = new Transaction();
 		tr.setTransactionType(TransactionType.INCOME);
 		tr.setTransactionAmount(100.0);
-		tr.setTransactionCharge(0.00);
 		tr.setToWallet(walletService.findByWalletName("Bank").getWalletId());
 		tr.setIncomeSource(incomeSourceService.findByIncomeSourceName("Company").getIncomeSourceId());
 		tr.setTransactionDate(new Date());
@@ -54,7 +53,7 @@ public class TransactionServiceTest {
 		assertNotNull(tr);
 
 		Wallet wallet = walletService.findById(tr.getToWallet());
-		wallet.setCurrentBalance((wallet.getCurrentBalance() + tr.getTransactionAmount()) - tr.getTransactionCharge());
+		wallet.setCurrentBalance(wallet.getCurrentBalance() + tr.getTransactionAmount());
 		wallet = walletService.update(wallet);
 		assertNotNull(wallet);
 	}
@@ -64,7 +63,6 @@ public class TransactionServiceTest {
 		Transaction tr = new Transaction();
 		tr.setTransactionType(TransactionType.EXPENSE);
 		tr.setTransactionAmount(100.0);
-		tr.setTransactionCharge(5.00);
 		tr.setFromWallet(walletService.findByWalletName("Bank").getWalletId());
 		tr.setIncomeSource(incomeSourceService.findByIncomeSourceName("Company").getIncomeSourceId());
 		tr.setTransactionDate(new Date());
@@ -75,7 +73,7 @@ public class TransactionServiceTest {
 		assertNotNull(tr);
 
 		Wallet wallet = walletService.findById(tr.getFromWallet());
-		wallet.setCurrentBalance(wallet.getCurrentBalance() - tr.getTransactionAmount() - tr.getTransactionCharge());
+		wallet.setCurrentBalance(wallet.getCurrentBalance() - tr.getTransactionAmount());
 		wallet = walletService.update(wallet);
 		assertNotNull(wallet);
 	}
@@ -85,7 +83,6 @@ public class TransactionServiceTest {
 		Transaction tr = new Transaction();
 		tr.setTransactionType(TransactionType.TRANSFER);
 		tr.setTransactionAmount(205.0);
-		tr.setTransactionCharge(0.00);
 		tr.setFromWallet(walletService.findByWalletName("Bkash").getWalletId());
 		tr.setToWallet(walletService.findByWalletName("Bank").getWalletId());
 		tr.setTransactionDate(new Date());
@@ -96,7 +93,7 @@ public class TransactionServiceTest {
 		assertNotNull(tr);
 
 		Wallet fromWallet = walletService.findById(tr.getFromWallet());
-		fromWallet.setCurrentBalance(fromWallet.getCurrentBalance() - tr.getTransactionAmount() - tr.getTransactionCharge());
+		fromWallet.setCurrentBalance(fromWallet.getCurrentBalance() - tr.getTransactionAmount());
 		fromWallet = walletService.update(fromWallet);
 		assertNotNull(fromWallet);
 
