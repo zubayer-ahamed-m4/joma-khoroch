@@ -18,6 +18,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.coderslab.model.enums.RecordStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -32,32 +33,38 @@ public class AbstractModel {
 	@Column(name = "creationDate")
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@ApiModelProperty(notes = "Creation date")
 	private Date creationDate;
 
 	@CreationTimestamp
 	@Column(name = "createTime")
 	@Temporal(TemporalType.TIME)
 	@DateTimeFormat(pattern = "hh:mm:ss")
+	@ApiModelProperty(notes = "Creation time")
 	private Date creationTime;
 
 	@UpdateTimestamp
 	@Column(name = "updateDate")
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@ApiModelProperty(notes = "Last updated date")
 	private Date updateDate = new Date();
 
 	@UpdateTimestamp
 	@Column(name = "updateTime")
 	@Temporal(TemporalType.TIME)
 	@DateTimeFormat(pattern = "hh:mm:ss")
+	@ApiModelProperty(notes = "Last updated time")
 	private Date updateTime = new Date();
 
 	@Column(name = "status")
 	@Enumerated(EnumType.STRING)
+	@ApiModelProperty(notes = "Record status")
 	private RecordStatus status = RecordStatus.L;
 
 	@Version
 	@Column(name = "versionNo")
+	@ApiModelProperty(notes = "Version of this record", hidden = true)
 	private Long versionNo;
 
 	@Transient
