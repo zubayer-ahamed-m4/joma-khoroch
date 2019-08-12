@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import com.coderslab.model.enums.ResponseStatus;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -29,5 +28,3 @@ public class ResponseHelper implements Serializable {
 	private Map<String, Object> contents = new HashMap<>();
 
 }
-
-

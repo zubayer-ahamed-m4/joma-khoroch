@@ -70,4 +70,5 @@ public class Wallet extends AbstractModel {
 		this.setUserId(wallet.getUserId());
 		return this;
 	}
+
 }

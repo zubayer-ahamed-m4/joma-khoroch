@@ -1,7 +1,6 @@
 package com.coderslab.restcontroller;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -87,14 +86,8 @@ public class WalletController {
 	})
 	@PostMapping(value = "/save", headers="Accept=application/json")
 	public ResponseHelper createWallet(@RequestBody Wallet wallet, BindingResult bindingResult) {
-		Set<ConstraintViolation<Wallet>> constraintViolations = validator.validate(wallet);
-		Iterator<ConstraintViolation<Wallet>> it = constraintViolations.iterator();
-		while(it.hasNext()){
-			ConstraintViolation<Wallet> item = it.next();
-			bindingResult.rejectValue(item.getPropertyPath().toString(), null, item.getMessage());
-		}
 
-		if(bindingResult.hasErrors()) {
+		if(walletValidate(wallet, validator, bindingResult).hasErrors()) {
 			StringBuilder errors = new StringBuilder();
 			bindingResult.getAllErrors().stream().forEach(e -> errors.append(e.getDefaultMessage()));
 			return new ResponseHelperBuilder()
@@ -137,5 +130,18 @@ public class WalletController {
 		Wallet w = walletService.findById(wallet.getWalletId());
 		w = w.getWallet(wallet);
 		return walletService.update(w);
+	}
+
+	public BindingResult walletValidate(Wallet wallet, Validator validator, BindingResult bindingResult) {
+		Set<ConstraintViolation<Wallet>> constraintViolations = validator.validate(wallet);
+		for(ConstraintViolation<Wallet> item : constraintViolations) {
+			bindingResult.rejectValue(item.getPropertyPath().toString(), null, item.getMessage());
+		}
+
+		Wallet w = walletService.findByWalletName(wallet.getWalletName());
+		if(w == null) return bindingResult;
+
+		bindingResult.rejectValue("walletName", null, "Wallet already exisist in the system");
+		return bindingResult;
 	}
 }
