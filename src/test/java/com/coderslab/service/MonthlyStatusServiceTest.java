@@ -49,7 +49,7 @@ public class MonthlyStatusServiceTest {
 
 		calDate.set(Calendar.DAY_OF_YEAR, calDate.getActualMaximum(Calendar.DAY_OF_YEAR));
 		Date yearEndDate = calDate.getTime();
-		
+
 		System.out.println(yearStartDate + " ---- " + yearEndDate);
 	}
 
@@ -59,4 +59,19 @@ public class MonthlyStatusServiceTest {
 		LocalDate firstDay = now.with(TemporalAdjusters.firstDayOfYear());
 		LocalDate lastDay = now.with(TemporalAdjusters.lastDayOfYear());
 	}
+
+	@Test
+	public void testCurrentMonthStartAndEndDate() {
+		Calendar c = Calendar.getInstance();
+		int year = c.get(Calendar.YEAR);
+		int month = c.get(Calendar.MONTH);
+		int day = 1;
+		c.set(year, 4, day);
+		int numOfDaysInMonth = c.getActualMaximum(Calendar.DAY_OF_MONTH);
+		System.out.println("First Day of month: " + c.getTime());
+		c.add(Calendar.DAY_OF_MONTH, numOfDaysInMonth - 1);
+		System.out.println("Last Day of month: " + c.getTime());
+	}
+
+	
 }

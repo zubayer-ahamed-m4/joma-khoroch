@@ -1,5 +1,12 @@
 package com.coderslab.model;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.coderslab.entity.Transaction;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -20,4 +27,6 @@ public class MonthlyStatus {
 	private Double currentBalance;
 	@ApiModelProperty(notes = "Month and Year", readOnly = true)
 	private String month;
+	@ApiModelProperty(notes = "Monthly all transactions grouping by date", readOnly = true)
+	private Map<Date, List<Transaction>> monthlyTransactions = new HashMap<>();
 }

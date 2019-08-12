@@ -25,4 +25,14 @@ public interface MonthlyStatusService {
 	 * @return {@link List} of {@link MonthlyStatus}
 	 */
 	public List<MonthlyStatus> getListOfMonthlyStatusofCurrentYear(Long userId, Date fromDate, Date toDate, RecordStatus recordStatus);
+
+	/**
+	 * Get monthly status with per day details
+	 * 
+	 * @param userId
+	 * @param month
+	 * @param recordStatus
+	 * @return
+	 */
+	public MonthlyStatus getMonthlyStatus(Long userId, Date fromDate, Date toDate, RecordStatus recordStatus);
 }

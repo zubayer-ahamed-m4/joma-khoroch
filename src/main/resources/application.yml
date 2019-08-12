@@ -23,7 +23,7 @@ spring:
       max-wait: 20000
       max-active: 50
       max-idle: 20
-      min-idle: 15
+      min-idle: 15 
   jpa:
     show-sql: false
     generate-ddl: true

@@ -1,7 +1,5 @@
 package com.coderslab.service.impl;
 
-import java.math.BigInteger;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -11,7 +9,6 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,36 +30,22 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class MonthlyStatusServiceImpl implements MonthlyStatusService {
 
-	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	private static final StringBuilder sql = new StringBuilder("SELECT t FROM Transaction t WHERE t.userId=:userId AND t.status=:status AND t.transactionDate BETWEEN :fromDate AND :toDate");
 
 	@Autowired private WalletService walletService;
 	@Autowired @PersistenceContext private EntityManager em;
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<MonthlyStatus> getListOfMonthlyStatusofCurrentYear(Long userId, Date fromDate, Date toDate, RecordStatus recordStatus) {
 		log.info("Getting list of monthly status....");
-		StringBuilder sql = new StringBuilder()
-			.append("SELECT ")
-			.append("	transactionid, ")
-			.append("	transactionamount, ")
-			.append("	transactiontype, ")
-			.append("	month ")
-			.append("FROM ")
-			.append("	transactions ")
-			.append("WHERE ")
-			.append("	status='"+ recordStatus +"' ")
-			.append("AND transactiondate between '"+ sdf.format(fromDate) +"' AND '"+ sdf.format(toDate) +"' ");
+		List<Transaction> transactions = em.createQuery(sql.toString(), Transaction.class)
+											.setParameter("userId", new Long(5))
+											.setParameter("fromDate", fromDate)
+											.setParameter("toDate", toDate)
+											.setParameter("status", recordStatus)
+											.getResultList();
 
-		if(log.isDebugEnabled()) log.debug(sql.toString());
-
-		Query q = em.createNativeQuery(sql.toString());
-
-		List<Object[]> objects = q.getResultList(); 
-		if(objects == null || objects.isEmpty()) return Collections.emptyList();
-
-		List<Transaction> transactions = new ArrayList<>();
-		objects.stream().forEach(o -> transactions.add(buildAndGetMonthlyStatusFromObject(o)));
+		if(transactions == null || transactions.isEmpty()) return Collections.emptyList();
 
 		Map<String, List<Transaction>> monthlyMap = new HashMap<>();
 		transactions.stream().forEach(tr -> {
@@ -79,38 +62,71 @@ public class MonthlyStatusServiceImpl implements MonthlyStatusService {
 		List<MonthlyStatus> list = new ArrayList<>();
 		monthlyMap.entrySet().stream().forEach(m -> {
 			MonthlyStatus ms = new MonthlyStatus();
+
 			Double monthlyIncome = m.getValue()
-					.stream()
-					.filter(t -> TransactionType.INCOME.equals(t.getTransactionType()))
-					.mapToDouble(Transaction::getTransactionAmount)
-					.sum();
+									.stream()
+									.filter(t -> TransactionType.INCOME.equals(t.getTransactionType()))
+									.mapToDouble(Transaction::getTransactionAmount)
+									.sum();
 
 			Double monthlyExpense = m.getValue()
-					.stream()
-					.filter(t -> TransactionType.EXPENSE.equals(t.getTransactionType()))
-					.mapToDouble(Transaction::getTransactionAmount)
-					.sum();
+									.stream()
+									.filter(t -> TransactionType.EXPENSE.equals(t.getTransactionType()))
+									.mapToDouble(Transaction::getTransactionAmount)
+									.sum();
+
 			Double monthlySavings = monthlyIncome - monthlyExpense;
+
 			ms.setMonthlyIncome(monthlyIncome);
 			ms.setMonthlyExpense(monthlyExpense);
 			ms.setMonthlySaving(monthlySavings);
 			ms.setCurrentBalance(totalCurrentBalance);
 			ms.setMonth(m.getKey());
+
 			list.add(ms);
 		});
 
 		return list;
 	}
 
-	private Transaction buildAndGetMonthlyStatusFromObject(Object[] obj) {
-		if(obj == null) return null;
+	@SuppressWarnings("unused")
+	@Override
+	public MonthlyStatus getMonthlyStatus(Long userId, Date fromDate, Date toDate, RecordStatus recordStatus) {
+		log.info("Getting monthly status with details ....");
 
-		Transaction tr = new Transaction();
-		tr.setTransactionId(((BigInteger) obj[0]).longValue());
-		tr.setTransactionAmount(obj[1] != null ? (Double) obj[1] : null);
-		tr.setTransactionType(TransactionType.valueOf((String) obj[2]));
-		tr.setMonth((String) obj[3]);
-		return tr; 
+		List<Transaction> transactions = em.createQuery(sql.toString(), Transaction.class)
+											.setParameter("userId", new Long(5))
+											.setParameter("fromDate", fromDate)
+											.setParameter("toDate", toDate)
+											.setParameter("status", recordStatus)
+											.getResultList();
+
+		Double monthlyIncome = transactions.stream()
+											.filter(t -> TransactionType.INCOME.equals(t.getTransactionType()))
+											.mapToDouble(Transaction::getTransactionAmount)
+											.sum();
+
+		Double monthlyExpense = transactions.stream()
+											.filter(t -> TransactionType.EXPENSE.equals(t.getTransactionType()))
+											.mapToDouble(Transaction::getTransactionAmount)
+											.sum();
+
+		Map<Date, List<Transaction>> transactionDetails = new HashMap<>();
+		transactions.stream().forEach(t -> {
+			if(transactionDetails.get(t.getTransactionDate()) != null) {
+				transactionDetails.get(t.getTransactionDate()).add(t);
+			} else {
+				List<Transaction> list = new ArrayList<>();
+				list.add(t);
+				transactionDetails.put(t.getTransactionDate(), list);
+			}
+		});
+
+		MonthlyStatus ms = new MonthlyStatus();
+		ms.setMonthlyIncome(monthlyIncome);
+		ms.setMonthlyExpense(monthlyExpense);
+		ms.setMonthlyTransactions(transactionDetails);
+		return ms;
 	}
 
 }
