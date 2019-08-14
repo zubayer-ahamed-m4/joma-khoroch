@@ -2,6 +2,8 @@ package com.coderslab.service.impl;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 public class WalletServiceImpl implements WalletService {
 
 	@Autowired private WalletRepository repo;
+	@Autowired @PersistenceContext private EntityManager jpa;
 
 	@Override
 	@Transactional
@@ -56,12 +59,26 @@ public class WalletServiceImpl implements WalletService {
 
 	@Override
 	public Wallet findByWalletName(String walletName) {
-		return repo.findWalletByWalletNameAndStatus(walletName, RecordStatus.L);
+		return jpa.createQuery("SELECT w FROM Wallet w WHERE UPPER(w.walletName)=:walnm AND w.status=:stat", Wallet.class)
+					.setParameter("walnm", walletName.toUpperCase())
+					.setParameter("stat", RecordStatus.L)
+					.getResultList()
+					.stream()
+					.findFirst()
+					.orElse(null);
 	}
 
 	@Override
 	public Double getTotalBalance() {
 		return findAll().stream().mapToDouble(Wallet::getCurrentBalance).sum();
+	}
+
+	@Override
+	public boolean isWalletHasAvailableBalance(Double transactionAmount, String walletName) {
+		Wallet wallet = findByWalletName(walletName);
+		if(wallet == null) return false;
+		if(wallet.getCurrentBalance() < transactionAmount) return false;
+		return true;
 	}
 
 }

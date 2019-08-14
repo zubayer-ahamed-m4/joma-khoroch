@@ -132,6 +132,11 @@ public class WalletController {
 		return walletService.update(w);
 	}
 
+	@GetMapping(value = "/balance/available/{transactionAmount}/{walletName}", produces = "application/json")
+	public boolean checkWalletBalance(@PathVariable Double transactionAmount, @PathVariable String walletName) {
+		return walletService.isWalletHasAvailableBalance(transactionAmount, walletName);
+	}
+
 	public BindingResult walletValidate(Wallet wallet, Validator validator, BindingResult bindingResult) {
 		Set<ConstraintViolation<Wallet>> constraintViolations = validator.validate(wallet);
 		for(ConstraintViolation<Wallet> item : constraintViolations) {

@@ -25,4 +25,13 @@ public interface WalletService extends GenericService<Wallet, Long> {
 	 * @return {@link Double}
 	 */
 	public Double getTotalBalance();
+
+	/**
+	 * Check wallet has available balance for transaction
+	 * 
+	 * @param transactionAmount
+	 * @param walletName
+	 * @return true or false
+	 */
+	public boolean isWalletHasAvailableBalance(Double transactionAmount, String walletName);
 }

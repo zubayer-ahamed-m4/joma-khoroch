@@ -11,4 +11,5 @@ import com.coderslab.entity.Transaction;
 @Component
 public interface TransactionService extends GenericService<Transaction, Long>{
 
+	
 }

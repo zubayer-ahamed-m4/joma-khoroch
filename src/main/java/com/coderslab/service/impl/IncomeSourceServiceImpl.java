@@ -2,6 +2,8 @@ package com.coderslab.service.impl;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class IncomeSourceServiceImpl implements IncomeSourceService {
 
-	@Autowired
-	private IncomeSourceRepository repo;
+	@Autowired private IncomeSourceRepository repo;
+	@Autowired @PersistenceContext private EntityManager jpa;
 
 	@Transactional
 	@Override
@@ -62,7 +64,13 @@ public class IncomeSourceServiceImpl implements IncomeSourceService {
 
 	@Override
 	public IncomeSource findByIncomeSourceName(String incomeSourceName) {
-		return repo.findIncomeSourceByIncomeSourceNameAndStatus(incomeSourceName, RecordStatus.L);
+		return jpa.createQuery("SELECT i from IncomeSource i WHERE UPPER(i.incomeSourceName)=:isnm AND i.status=:stat", IncomeSource.class)
+					.setParameter("isnm", incomeSourceName.toUpperCase())
+					.setParameter("stat", RecordStatus.L)
+					.getResultList()
+					.stream()
+					.findFirst()
+					.orElse(null);
 	}
 
 }

@@ -33,12 +33,12 @@ public class MonthlyStatusServiceImpl implements MonthlyStatusService {
 	private static final StringBuilder sql = new StringBuilder("SELECT t FROM Transaction t WHERE t.userId=:userId AND t.status=:status AND t.transactionDate BETWEEN :fromDate AND :toDate");
 
 	@Autowired private WalletService walletService;
-	@Autowired @PersistenceContext private EntityManager em;
+	@Autowired @PersistenceContext private EntityManager jpa;
 
 	@Override
 	public List<MonthlyStatus> getListOfMonthlyStatusofCurrentYear(Long userId, Date fromDate, Date toDate, RecordStatus recordStatus) {
 		log.info("Getting list of monthly status....");
-		List<Transaction> transactions = em.createQuery(sql.toString(), Transaction.class)
+		List<Transaction> transactions = jpa.createQuery(sql.toString(), Transaction.class)
 											.setParameter("userId", new Long(5))
 											.setParameter("fromDate", fromDate)
 											.setParameter("toDate", toDate)
@@ -94,7 +94,7 @@ public class MonthlyStatusServiceImpl implements MonthlyStatusService {
 	public MonthlyStatus getMonthlyStatus(Long userId, Date fromDate, Date toDate, RecordStatus recordStatus) {
 		log.info("Getting monthly status with details ....");
 
-		List<Transaction> transactions = em.createQuery(sql.toString(), Transaction.class)
+		List<Transaction> transactions = jpa.createQuery(sql.toString(), Transaction.class)
 											.setParameter("userId", new Long(5))
 											.setParameter("fromDate", fromDate)
 											.setParameter("toDate", toDate)
