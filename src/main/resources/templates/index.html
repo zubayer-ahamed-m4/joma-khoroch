@@ -1,9 +1,46 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Joma Khoroch</title>
+	<title>Joma Khoroch</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+		<link rel="stylesheet" th:href="@{/css/all.css}"/>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 	</head>
 	<body>
-		Home page
+		<div class="container">
+			<div class="row">
+				<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+					<a class="navbar-brand" href="#">Joma Khoroch</a>
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+
+					<div class="collapse navbar-collapse" id="collapsibleNavbar">
+						<ul class="navbar-nav">
+							<li class="nav-item active">
+								<a class="nav-link" href="#">Monthly Status</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#">Yearly Status</a>
+							</li>
+							
+							
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+									<i class="fa fa-link"></i>
+								</a>
+								<div class="dropdown-menu">
+									<a class="dropdown-item" href="#">Wallet status</a>
+									<a class="dropdown-item" href="#">Income source</a>
+									<a class="dropdown-item" href="#">Expense type</a>
+								</div>
+							</li>
+						</ul>
+					</div> 
+				</nav>
+			</div>
+		</div>
 	</body>
 </html>
