@@ -13,6 +13,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -43,9 +45,11 @@ public class Transaction extends AbstractModel {
 
 	@Column(name = "transactionType")
 	@Enumerated(EnumType.STRING)
+	@NotNull
 	private TransactionType transactionType;
 
 	@Column(name = "transactionAmount")
+	@Min(value = 1, message = "Transaction amount must be greater then 0")
 	private Double transactionAmount;
 
 	@Column(name = "fromWallet")
@@ -63,16 +67,20 @@ public class Transaction extends AbstractModel {
 	@Column(name = "transactionDate")
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@NotNull
 	private Date transactionDate;
 
 	@Column(name = "transactionTime")
 	@Temporal(TemporalType.TIME)
 	@DateTimeFormat(pattern = "hh:mm:ss")
+	@NotNull
 	private Date transactionTime;
 
 	@Column(name = "month")
+	@NotNull
 	private String month;
 
 	@Column(name = "userId")
+	@NotNull
 	private Long userId;
 }

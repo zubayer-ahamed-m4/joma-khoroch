@@ -69,7 +69,7 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 
 	@Override
 	public ExpenseType findByExpenseTypeName(String expenseTypeName) {
-		return jpa.createQuery("SELECT e FROM ExpenseType e EHERE UPPER(e.expenseTypeName)=:etnm AND e.status=:stat", ExpenseType.class)
+		return jpa.createQuery("SELECT e FROM ExpenseType e WHERE UPPER(e.expenseTypeName)=:etnm AND e.status=:stat", ExpenseType.class)
 				.setParameter("etnm", expenseTypeName.toUpperCase())
 				.setParameter("stat", RecordStatus.L)
 				.getResultList()
@@ -77,7 +77,5 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 				.findFirst()
 				.orElse(null);
 	}
-
-	
 
 }
