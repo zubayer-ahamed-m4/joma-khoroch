@@ -1,46 +1,189 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 	<head>
 	<title>Joma Khoroch</title>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 		<link rel="stylesheet" th:href="@{/css/all.css}"/>
+		<link rel = "stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.css"/>
+		<link rel="stylesheet" th:href="@{/css/controller.css}"/>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+		
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
+		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
+		<script type="text/javascript" th:src="@{/js/controller.js}"></script>
 	</head>
 	<body>
 		<div class="container">
 			<div class="row">
-				<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
-					<a class="navbar-brand" href="#">Joma Khoroch</a>
-					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-						<span class="navbar-toggler-icon"></span>
-					</button>
-
-					<div class="collapse navbar-collapse" id="collapsibleNavbar">
-						<ul class="navbar-nav">
-							<li class="nav-item active">
-								<a class="nav-link" href="#">Monthly Status</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="#">Yearly Status</a>
-							</li>
-							
-							
-							<li class="nav-item dropdown">
-								<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-									<i class="fa fa-link"></i>
-								</a>
-								<div class="dropdown-menu">
-									<a class="dropdown-item" href="#">Wallet status</a>
-									<a class="dropdown-item" href="#">Income source</a>
-									<a class="dropdown-item" href="#">Expense type</a>
-								</div>
-							</li>
-						</ul>
-					</div> 
+				<nav class="navbar navbar-inverse">
+					<div class="container-fluid">
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+							</button>
+							<a class="navbar-brand" th:href="@{/}">Joma Khoroch</a>
+						</div>
+						<div class="collapse navbar-collapse" id="myNavbar">
+							<ul class="nav navbar-nav">
+								<li class="active"><a href="#">Monthly Status</a></li>
+								<li><a href="#">Yearly Status</a></li>
+							</ul>
+							<ul class="nav navbar-nav navbar-right">
+								<li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+								<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+								<li class="dropdown">
+									<a class="dropdown-toggle" data-toggle="dropdown" href="#">dropdown
+									<span class="caret"></span></a>
+									<ul class="dropdown-menu">
+										<li><a href="#">Wallet Status</a></li>
+										<li><a href="#">Income Status</a></li>
+										<li><a href="#">Expense Status</a></li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</div>
 				</nav>
 			</div>
+
+			<div class="row">
+				<div class="col-md-12" style="background: #fcc90f; height: 100%; padding: 10px 10px; box-sizing: border-box; overflow: auto;">
+					<div class="col-md-12 current-month-box">
+						<div class="row">
+							<div class="col-xs-12">
+								<canvas id="myChart" width="180" height="100"></canvas>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-xs-6" style="width: 49.7%; background: #009938; padding: 5px 0px; font-size: 16px; font-weight: bold; border-top-left-radius: 5px;">
+									Monthly Income<br/>
+									43,167 tk
+								</div>
+								<div class="col-xs-6" style="width: 49.7%; float: right; background: #f25a80; padding: 5px 0px; font-size: 16px; font-weight: bold; border-top-right-radius: 5px;">
+									Monthly Expense<br/>
+									23,597tk
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-6" style="width: 49.7%; background: #3ec2a1; margin-top: 5px; padding: 5px 0px; font-size: 16px; font-weight: bold; border-bottom-left-radius: 5px;">
+									Monthly Saving<br/>
+									19,570tk
+								</div>
+								<div class="col-xs-6" style="width: 49.7%; float: right; background: #00b386; margin-top: 5px; padding: 5px 0px; font-size: 16px; font-weight: bold; border-bottom-right-radius: 5px;">
+									Current Balance<br/>
+									145,402tk
+								</div>
+							</div>
+						</div>
+						
+					</div>
+					<div class="col-md-12" style="text-align: center; font-weight: bold; font-size: 20px; background: #080145; color: #fff; padding: 5px 10px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
+						August, 2019
+						<span class="pull-right"><i class="fa fa-chevron-right"></i></span>
+					</div>
+
+					<div class="col-xs-6 month-box">
+						<p>Income : <span>48,167/-</span></p>
+						<p>Expense : <span>24,269/-</span></p>
+						<p>Saving : <span>23,898/-</span></p>
+						<p>
+							August, 2019
+							<span class="pull-right"><i class="fa fa-chevron-right"></i></span>
+						</p>
+					</div>
+					<div class="col-xs-6 month-box">
+						<p>Income : <span>48,167/-</span></p>
+						<p>Expense : <span>24,269/-</span></p>
+						<p>Saving : <span>23,898/-</span></p>
+						<p>
+							August, 2019
+							<span class="pull-right"><i class="fa fa-chevron-right"></i></span>
+						</p>
+					</div>
+					<div class="col-xs-6 month-box">
+						<p>Income : <span>48,167/-</span></p>
+						<p>Expense : <span>24,269/-</span></p>
+						<p>Saving : <span>23,898/-</span></p>
+						<p>
+							August, 2019
+							<span class="pull-right"><i class="fa fa-chevron-right"></i></span>
+						</p>
+					</div>
+					<div class="col-xs-6 month-box">
+						<p>Income : <span>48,167/-</span></p>
+						<p>Expense : <span>24,269/-</span></p>
+						<p>Saving : <span>23,898/-</span></p>
+						<p>
+							August, 2019
+							<span class="pull-right"><i class="fa fa-chevron-right"></i></span>
+						</p>
+					</div>
+					<div class="col-xs-6 month-box">
+						<p>Income : <span>48,167/-</span></p>
+						<p>Expense : <span>24,269/-</span></p>
+						<p>Saving : <span>23,898/-</span></p>
+						<p>
+							August, 2019
+							<span class="pull-right"><i class="fa fa-chevron-right"></i></span>
+						</p>
+					</div>
+				</div>
+			</div>
 		</div>
+
+		<script>
+			var ctx = document.getElementById('myChart').getContext('2d');
+			var labels = [];
+			for(var i = 0; i < 10; i++){
+				labels.push(i);
+			}
+			var data = {
+				labels: labels,
+				datasets: [
+					{
+						label: "Income",
+						lineTension: 0,
+						borderColor: "#009900",
+						radius: 5,
+						data: [5000, 7000, 10000, 20000, 20000, 20000, 20000, 20000, 20000, 20000]
+					},
+					{
+						label: "Expense",
+						borderColor: "#eb4034",
+						lineTension: 0,
+						radius: 5,
+						data: [5000, 5500, 7000, 10000, 11000, 11000, 11000, 13000, 17000, 17500]
+					}
+				]
+			};
+			var options = {
+					responsive: true,
+					title: {
+						display: true,
+						position: "bottom",
+						text: "Income vs Expense daily increment",
+						fontSize: 12,
+						fontColor: "#fff"
+					},
+					legend: {
+						display: false,
+						position: "bottom",
+						labels: {
+							fontColor: "#fff",
+							fontSize: 12
+					}
+				}
+			};
+			var myLineChart = new Chart(ctx, {
+				type: 'line',
+				data: data,
+				options: options
+			});
+		</script>
 	</body>
 </html>
